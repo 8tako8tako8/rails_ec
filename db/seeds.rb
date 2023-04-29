@@ -18,11 +18,9 @@ if Rails.env.development?
 end
 
 if Rails.env.production?
-  (1..10).each do |i|
-    product = Product.new(name: "商品#{i}", price: 1000)
-    file_path = Rails.root.join('db/seeds/sample.jpg')
-    file = File.open(file_path)
-    product.image.attach(io: file, filename: 'sample.jpg', content_type: 'image/jpeg')
-    product.save
-  end
+  product = Product.new(name: "商品#{i}", price: 1000)
+  file_path = Rails.root.join('db/seeds/sample.jpg')
+  file = File.open(file_path)
+  product.image.attach(io: file, filename: 'sample.jpg', content_type: 'image/jpeg')
+  product.save
 end
