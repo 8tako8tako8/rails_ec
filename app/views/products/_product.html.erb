@@ -20,7 +20,7 @@
           <div class="bi-star-fill"></div>
         </div>
         <!-- Product price-->
-        <%= product.price %>
+        <%= number_with_precision(product.price, precision: 2) %>
       </div>
     </div>
     <!-- Product actions-->
