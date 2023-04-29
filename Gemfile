@@ -82,4 +82,4 @@ group :test do
   gem 'webdrivers'
 end
 
-gem "aws-sdk-s3", "~> 1.121"
+gem 'aws-sdk-s3', '~> 1.121'
