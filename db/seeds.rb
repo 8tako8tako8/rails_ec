@@ -9,7 +9,7 @@
 #   Character.create(name: "Luke", movie: movies.first)
 if Rails.env.development?
   (1..10).each do |i|
-    product = Product.new(name: "商品#{i}", price: "#{1000 * i}")
+    product = Product.new(name: "商品#{i}", price: 1000 * i)
     file_path = Rails.root.join('db/seeds/sample.jpg')
     file = File.open(file_path)
     product.image.attach(io: file, filename: 'sample.jpg', content_type: 'image/jpeg')
@@ -19,7 +19,7 @@ end
 
 if Rails.env.production?
   (1..10).each do |i|
-    product = Product.new(name: "商品#{i}", price: "#{1000 * i}")
+    product = Product.new(name: "商品#{i}", price: 1000 * i)
     file_path = Rails.root.join('db/seeds/sample.jpg')
     file = File.open(file_path)
     product.image.attach(io: file, filename: 'sample.jpg', content_type: 'image/jpeg')
