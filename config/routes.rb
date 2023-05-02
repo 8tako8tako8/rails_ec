@@ -2,8 +2,7 @@
 
 Rails.application.routes.draw do
   resources :products, only: %i[index show]
-
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/") n
+  resources :carts, only: %i[index]
+  post 'carts/add-to-cart', to: 'carts#add_to_cart'
+  delete 'carts/remove-from-cart', to: 'carts#remove_from_cart'
 end
