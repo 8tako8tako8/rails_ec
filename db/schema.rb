@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_30_121112) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_06_053326) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -55,6 +55,33 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_30_121112) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "order_details", force: :cascade do |t|
+    t.string "product_sku", null: false
+    t.string "product_name", null: false
+    t.decimal "unit_price", null: false
+    t.integer "quantity", null: false
+    t.bigint "order_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_order_details_on_order_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.string "first_name", null: false
+    t.string "last_name", null: false
+    t.string "email"
+    t.string "prefecture", null: false
+    t.string "address", null: false
+    t.string "address2", null: false
+    t.string "card_name", null: false
+    t.string "card_number", null: false
+    t.string "card_expiration_date", null: false
+    t.string "card_cvv", null: false
+    t.decimal "total_price", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name", null: false
     t.decimal "price", null: false
@@ -77,4 +104,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_30_121112) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cart_products", "carts"
   add_foreign_key "cart_products", "products"
+  add_foreign_key "order_details", "orders"
 end
