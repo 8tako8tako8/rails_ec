@@ -12,7 +12,11 @@ class OrdersController < ApplicationController
     flash[:notice] = '購入ありがとうございます'
     redirect_to root_path
   end
-  
+
+  def index
+    @orders = Order.all
+  end
+
   private
 
   def order_params

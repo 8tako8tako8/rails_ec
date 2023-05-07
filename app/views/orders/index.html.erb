@@ -1,0 +1,22 @@
+<h1>注文一覧</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>姓</th>
+      <th>名</th>
+      <th>合計金額</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @orders.each do |order| %>
+      <tr>
+        <td><%= link_to order.id, order %></td>
+        <td><%= order.last_name %></td>
+        <td><%= order.first_name %></td>
+        <td><%= number_to_currency(order.total_price, locale: 'jp') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
