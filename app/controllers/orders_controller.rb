@@ -1,4 +1,5 @@
 class OrdersController < ApplicationController
+  before_action :basic_auth, only: [:index, :show]
 
   def create
     ApplicationRecord.transaction do
@@ -22,6 +23,12 @@ class OrdersController < ApplicationController
   end
 
   private
+
+  def basic_auth
+    authenticate_or_request_with_http_basic do |username, password|
+      username == ENV['BASIC_AUTH_USER'] && password == ENV['BASIC_AUTH_PASSWORD']
+    end
+  end
 
   def order_params
     params.require(:order).permit(
