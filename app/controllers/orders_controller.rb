@@ -9,6 +9,8 @@ class OrdersController < ApplicationController
       end
       current_cart.destroy!
     end
+    flash[:notice] = '購入ありがとうございます'
+    redirect_to root_path
   end
   
   private
