@@ -8,8 +8,10 @@
       </ul>
       <form class="d-flex">
         <button class="btn btn-outline-dark" type="submit">
-          <i class="bi-cart-fill me-1"></i>
-          <span class="badge bg-dark text-white ms-1 rounded-pill"><%= current_cart.total_quantity %></span>
+          <%= link_to carts_path, class: "btn btn-outline-dark btn-link" do %>
+            <i class="bi-cart-fill me-1"></i>
+            <%= content_tag :span, current_cart.total_quantity, class: "badge bg-primary text-white ms-1 rounded-pill" %>
+          <% end %>
         </button>
       </form>
     </div>
