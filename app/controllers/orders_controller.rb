@@ -7,6 +7,7 @@ class OrdersController < ApplicationController
       request_orders[:order_details].each do |order_detail|
         create_order_detail(order, order_detail)
       end
+      current_cart.destroy!
     end
   end
   
