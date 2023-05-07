@@ -3,13 +3,14 @@ class OrdersController < ApplicationController
 
   def create
     ApplicationRecord.transaction do
-      request_orders = order_params
-      order = create_order(request_orders)
-      request_orders[:order_details].each do |order_detail|
+      request_order = order_params
+      order = create_order(request_order)
+      request_order[:order_details].each do |order_detail|
         create_order_detail(order, order_detail)
       end
       current_cart.destroy!
     end
+    OrderMailer.order_confirm(request_order)
     flash[:notice] = '購入ありがとうございます'
     redirect_to root_path
   end
