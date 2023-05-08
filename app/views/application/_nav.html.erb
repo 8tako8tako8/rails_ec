@@ -7,9 +7,10 @@
         <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
       </ul>
       <form class="d-flex">
-        <button class="btn btn-outline-dark" type="submit">
-          <i class="bi-cart-fill me-1"></i>
-          <span class="badge bg-dark text-white ms-1 rounded-pill"><%= current_cart.total_quantity %></span>
+        <button class="btn" type="submit">
+          <%= link_to carts_path, class: "btn btn-outline-dark btn-link" do %>
+            <%= content_tag :span, "カート数量：#{current_cart.total_quantity}", class: "badge bg-black text-white ms-1 rounded-pill" %>
+          <% end %>
         </button>
       </form>
     </div>
