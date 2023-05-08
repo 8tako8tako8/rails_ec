@@ -25,7 +25,11 @@
     </div>
     <!-- Product actions-->
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-      <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">カートに追加</a></div>
+      <%= form_with url: '/carts/add-to-cart' do |form| %>
+        <%= form.hidden_field :product_id, value: product.id %>
+        <%= form.hidden_field :quantity, value: 1 %>
+        <%= form.submit "カートに追加", class: "btn btn-outline-dark mt-auto" %>
+      <% end %>
     </div>
   </div>
 </div>

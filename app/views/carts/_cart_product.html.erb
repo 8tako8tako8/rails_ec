@@ -1,0 +1,15 @@
+<li class="list-group-item d-flex justify-content-between lh-sm">
+  <div>
+    <h6 class="my-0"><%= cart_product.product.name %></h6>
+  </div>
+  <div class="col-md-5">
+    <%= form_with url: 'carts/remove-from-cart', method: :delete do |form| %>
+      <%= form.hidden_field :product_id, value: cart_product.product.id %>
+      <%= form.submit "削除", class: "btn btn-outline-dark mt-auto" %>
+    <% end %>
+  </div>
+  <span class="text-body-secondary">
+    <%= number_to_currency(cart_product.product.price, locale: 'jp') %>
+    <%= " x #{cart_product.quantity}" %>
+  </span>
+</li>

@@ -1,0 +1,97 @@
+<div class="container">
+  <main>
+    <div class="py-5 text-center">
+      <h1>決済フォーム</h2>
+    </div>
+    <div class="row g-5">
+      <div class="col-md-5 col-lg-4 order-md-last">
+        <h4 class="d-flex justify-content-between align-items-center mb-3">
+          <span class="text-primary">カート</span>
+          <span class="badge bg-primary rounded-pill"><%= current_cart.total_quantity %></span>
+        </h4>
+        <ul class="list-group mb-3">
+          <% current_cart.cart_products.each do |cart_product| %>
+            <%= render partial: 'cart_product', locals: { cart_product: cart_product } %>
+          <% end %>
+          <%# <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+            <div class="text-success">
+              <h6 class="my-0">Promo code</h6>
+              <small>EXAMPLECODE</small>
+            </div>
+            <span class="text-success">−$5</span>
+          </li> %>
+          <li class="list-group-item d-flex justify-content-between">
+            <span>合計金額</span>
+            <strong><%= number_to_currency(current_cart.total_price, locale: 'jp') %></strong>
+          </li>
+        </ul>
+        <form class="card p-2">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="プロモーションコード">
+            <button type="submit" class="btn btn-secondary">適用</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-7 col-lg-8">
+        <h4 class="mb-3">請求先</h4>
+        <form class="needs-validation" novalidate>
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="lastName" class="form-label">姓</label>
+              <input type="text" class="form-control" id="lastName" placeholder="田中" value="" required>
+            </div>
+            <div class="col-sm-6">
+              <label for="firstName" class="form-label">名</label>
+              <input type="text" class="form-control" id="firstName" placeholder="太郎" value="" required>
+            </div>
+            <div class="col-12">
+              <label for="email" class="form-label">Email（任意）</label>
+              <input type="email" class="form-control" id="email" placeholder="you@example.com">
+            </div>
+            <div class="col-12">
+              <label for="address" class="form-label">都道府県</label>
+              <input type="text" class="form-control" id="address" placeholder="東京都" required>
+            </div>
+            <div class="col-12">
+              <label for="address2" class="form-label">市区町村</label>
+              <input type="text" class="form-control" id="address2" placeholder="渋谷区東" required>
+            </div>
+            <div class="col-12">
+              <label for="address2" class="form-label">丁目・番地</label>
+              <input type="text" class="form-control" id="address3" placeholder="1-1-1" required>
+            </div>
+          </div>
+          <hr class="my-4">
+          <h4 class="mb-3">お支払い方法</h4>
+          <div class="my-3">
+            <div class="form-check">
+              <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
+              <label class="form-check-label" for="credit">クレジットカード</label>
+            </div>
+          </div>
+          <div class="row gy-3">
+            <div class="col-md-6">
+              <label for="cc-name" class="form-label">名前</label>
+              <input type="text" class="form-control" id="cc-name" placeholder="TARO TANAKA" required>
+            </div>
+            <div class="col-md-6">
+              <label for="cc-number" class="form-label">カード番号</label>
+              <input type="text" class="form-control" id="cc-number" placeholder="1111111111111111" required>
+            </div>
+            <div class="col-md-3">
+              <label for="cc-expiration" class="form-label">有効期限</label>
+              <input type="text" class="form-control" id="cc-expiration" placeholder="月 / 年" required>
+            </div>
+            <div class="col-md-3">
+              <label for="cc-cvv" class="form-label">CVV</label>
+              <input type="text" class="form-control" id="cc-cvv" placeholder="000" required>
+            </div>
+          </div>
+          <hr class="my-4">
+          <button class="w-100 btn btn-primary btn-lg" type="submit">購入する</button>
+          <hr class="my-4">
+        </form>
+      </div>
+    </div>
+  </main>
+</div>

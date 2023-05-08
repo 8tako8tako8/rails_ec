@@ -10,11 +10,11 @@
         </div>
         <p class="lead"><%= @product.description %></p>
         <div class="d-flex">
-          <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
-          <button class="btn btn-outline-dark flex-shrink-0" type="button">
-            <i class="bi-cart-fill me-1"></i>
-            Add to cart
-          </button>
+          <%= form_with url: '/carts/add-to-cart' do |form| %>
+            <%= form.hidden_field :product_id, value: @product.id %>
+            <%= form.number_field :quantity, value: 1, in: 1..10, step: 1 %>
+            <%= form.submit "カートに追加", class: "btn btn-outline-dark mt-auto" %>
+          <% end %>
         </div>
       </div>
     </div>
