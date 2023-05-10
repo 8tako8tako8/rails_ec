@@ -2,10 +2,10 @@ class OrderMailer < ApplicationMailer
   def order_confirm(order)
     @order = order
     @order_details = order[:order_details]
-    logger.info "++before mail"
+    logger.info "++b++"
     if order[:email].present?
-      mail(to: order[:email], subject: '注文完了のお知らせ').deliver_now
-      logger.info "++#{order[:email]}"
+      mail(to: order[:email], subject: '注文完了のお知らせ').deliver_later
+      logger.info "++c++"
     end
   end
 end
