@@ -19,6 +19,7 @@ class OrdersController < ApplicationController
     end
     logger.info "++a++"
     OrderMailer.order_confirm(request_order)
+    logger.info "++d++"
     flash[:notice] = '購入ありがとうございます'
     redirect_to root_path
   end
