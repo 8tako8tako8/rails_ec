@@ -2,8 +2,8 @@ class OrdersController < ApplicationController
   before_action :basic_auth, only: [:index, :show]
 
   def create
+    request_order = order_params
     ApplicationRecord.transaction do
-      request_order = order_params
       order = create_order(request_order)
       request_order[:order_details].each do |order_detail|
         create_order_detail(order, order_detail)
