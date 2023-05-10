@@ -2,12 +2,11 @@
 
 class CartsController < ApplicationController
   def index
-    @order = Order.new
+    @order = Order.new(flash[:order])
   end
 
   def add_to_cart
     product_id = params[:product_id]
-    product_sku = params[:product_sku]
     quantity = params[:quantity].to_i
     cart_product = current_cart.cart_products.find_by(product_id: product_id)
     if cart_product
