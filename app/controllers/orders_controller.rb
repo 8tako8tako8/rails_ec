@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :basic_auth, only: [:index, :show]
+  before_action :basic_auth, only: [:index, :show], if: -> { Rails.env.production? }
 
   def create
     request_order = order_params
