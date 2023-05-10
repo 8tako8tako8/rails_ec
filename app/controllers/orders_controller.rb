@@ -2,9 +2,9 @@ class OrdersController < ApplicationController
   before_action :basic_auth, only: [:index, :show]
 
   def create
+    request_order = order_params
     ApplicationRecord.transaction do
-      request_order = order_params
-      order = create_order(request_order)
+      order = create_order(request_order, current_cart.promotion_code)
       request_order[:order_details].each do |order_detail|
         create_order_detail(order, order_detail)
       end
@@ -54,7 +54,7 @@ class OrdersController < ApplicationController
     )
   end
   
-  def create_order(order)
+  def create_order(order, promotion_code)
     Order.create!(
       first_name: order[:first_name],
       last_name: order[:last_name],
@@ -66,7 +66,8 @@ class OrdersController < ApplicationController
       card_number: order[:card_number],
       card_expiration_date: order[:card_expiration_date],
       card_cvv: order[:card_cvv],
-      total_price: order[:total_price]
+      total_price: order[:total_price],
+      promotion_code: promotion_code
     )
   end
 
