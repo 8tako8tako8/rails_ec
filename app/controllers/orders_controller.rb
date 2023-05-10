@@ -3,6 +3,13 @@ class OrdersController < ApplicationController
 
   def create
     request_order = order_params
+    if request_order[:order_details].nil?
+      redirect_to request.referrer, flash: {
+        order: request_order,
+        alert: 'カートが空です'
+      }
+      return
+    end
     ApplicationRecord.transaction do
       order = create_order(request_order)
       request_order[:order_details].each do |order_detail|
