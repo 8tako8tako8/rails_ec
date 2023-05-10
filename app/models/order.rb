@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class Order < ApplicationRecord
-  has_many :order_details
+  has_many :order_details, dependent: :destroy
 
   validates :first_name, presence: true
   validates :last_name, presence: true
