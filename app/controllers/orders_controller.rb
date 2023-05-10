@@ -18,7 +18,7 @@ class OrdersController < ApplicationController
       current_cart.destroy!
     end
     logger.info "++a++"
-    OrderMailer.order_confirm(request_order)
+    OrderMailer.order_confirm(request_order).deliver_now
     logger.info "++d++"
     flash[:notice] = '購入ありがとうございます'
     redirect_to root_path
