@@ -9,4 +9,4 @@ SKU:<%= order_detail[:product_sku] %>
 数量:<%= order_detail[:quantity] %>
 ------------------------------------
 <% end %>
-合計:<%= number_to_currency(@order.total_price, locale: 'jp') %>
+合計:<%= number_to_currency(@order[:total_price], locale: 'jp') %>

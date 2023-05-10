@@ -17,7 +17,9 @@ class OrdersController < ApplicationController
       end
       current_cart.destroy!
     end
-    OrderMailer.order_confirm(request_order)
+    if request_order[:email].present?
+      OrderMailer.order_confirm(request_order).deliver_now
+    end
     flash[:notice] = '購入ありがとうございます'
     redirect_to root_path
   end
