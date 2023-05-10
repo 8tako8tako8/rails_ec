@@ -2,6 +2,7 @@
 
 class Cart < ApplicationRecord
   has_many :cart_products, dependent: :destroy
+  belongs_to :promotion_code, optional: true
 
   def total_quantity
     cart_products.sum(:quantity)
