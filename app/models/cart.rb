@@ -9,15 +9,8 @@ class Cart < ApplicationRecord
   end
 
   def total_price
-    each_prices = cart_products.map do |cart_product|
-      cart_product.product.price * cart_product.quantity
-    end
-    if promotion_code.nil?
-      each_prices.sum
-    elsif (each_prices.sum - promotion_code.discount_amount) <= 0
-      0
-    else
-      each_prices.sum - promotion_code.discount_amount
-    end
+    each_prices = cart_products.map { |cart_product| cart_product.product.price * cart_product.quantity }
+    discounted_price = each_prices.sum - (promotion_code&.discount_amount || 0)
+    [discounted_price, 0].max
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PromotionCodesController < ApplicationController
   def use
     ApplicationRecord.transaction do
@@ -15,7 +17,7 @@ class PromotionCodesController < ApplicationController
         promotion_code.update!(is_used: true)
         flash[:notice] = 'プロモーションコードが適用されました'
       end
-    end 
+    end
     redirect_to carts_path
   end
 end
