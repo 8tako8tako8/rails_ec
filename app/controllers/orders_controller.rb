@@ -78,16 +78,17 @@ class OrdersController < ApplicationController
 
   def order_details_blank?(order_params)
     if order_params[:order_details].blank?
-      session[:order] = order_params
-      redirect_to request.referer, flash: { error_messages: ['カートが空です'] }
+      @order = Order.new(order_params)
+      flash.now[:error_messages] = ['カートが空です']
+      render 'carts/index'
       return true
     end
     false
   end
 
   def set_err_params_and_redirect(messages, request_order)
-    session[:order] = request_order
-    flash[:error_messages] = messages
-    redirect_to request.referer
+    @order = Order.new(request_order)
+    flash.now[:error_messages] = messages
+    render 'carts/index'
   end
 end
