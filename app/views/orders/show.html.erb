@@ -27,9 +27,9 @@
         <td><%= order_detail.product_name %></td>
         <td><%= order_detail.product_sku %></td>
         <td><%= order_detail.quantity %></td>
-        <td><%= number_to_currency(order_detail.unit_price, locale: 'jp') %></td>
+        <td><%= number_to_currency(order_detail.unit_price, locale: 'ja') %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-<p>合計金額: <%= number_to_currency(@order.total_price, locale: 'jp') %></p>
+<p>合計金額: <%= number_to_currency(@order.total_price, locale: 'ja') %></p>
