@@ -4,24 +4,15 @@ class OrdersController < ApplicationController
   before_action :basic_auth, only: %i[index show], if: -> { Rails.env.production? }
 
   def create
+    return if order_details_blank?(order_params)
+
     request_order = order_params.except(:order_details)
-    if order_params[:order_details].blank?
-      session[:order] = order_params
-      redirect_to request.referer, flash: { error_messages: ['カートが空です'] } and return
-    end
     begin
-      ApplicationRecord.transaction { register_order(order_params) }
-      OrderMailer.order_confirm(order_params).deliver_now if order_params[:email].present?
-      flash[:notice] = '購入ありがとうございます'
-      redirect_to root_path
+      order(order_params)
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      flash[:error_messages] = e.record.errors.full_messages
-      session[:order] = request_order
-      redirect_to request.referer, flash: { error_messages: e.record.errors.full_messages } and return
-    rescue => e
-      flash[:error_messages] = ['予期しないエラー']
-      session[:order] = request_order
-      redirect_to request.referer, flash: { error_messages: ['予期しないエラー'] } and return
+      set_err_params_and_redirect(e.record.errors.full_messages, request_order)
+    rescue StandardError
+      set_err_params_and_redirect(['予期しないエラー'], request_order)
     end
   end
 
@@ -50,6 +41,13 @@ class OrdersController < ApplicationController
     )
   end
 
+  def order(order_params)
+    ApplicationRecord.transaction { register_order(order_params) }
+    OrderMailer.order_confirm(order_params).deliver_now if order_params[:email].present?
+    flash[:notice] = '購入ありがとうございます'
+    redirect_to root_path
+  end
+
   def register_order(request_order)
     order = create_order(request_order)
     request_order[:order_details].each do |order_detail|
@@ -76,5 +74,20 @@ class OrdersController < ApplicationController
       unit_price: order_detail[:unit_price],
       quantity: order_detail[:quantity]
     )
+  end
+
+  def order_details_blank?(order_params)
+    if order_params[:order_details].blank?
+      session[:order] = order_params
+      redirect_to request.referer, flash: { error_messages: ['カートが空です'] }
+      return true
+    end
+    false
+  end
+
+  def set_err_params_and_redirect(messages, request_order)
+    session[:order] = request_order
+    flash[:error_messages] = messages
+    redirect_to request.referer
   end
 end
