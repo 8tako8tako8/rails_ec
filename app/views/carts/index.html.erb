@@ -1,5 +1,11 @@
-<% if flash[:alert] %>
-  <div class="alert alert-danger"><%= flash[:alert] %></div>
+<% if flash[:error_messages]  %>
+  <div class="alert alert-danger">
+    <ul>
+      <% flash[:error_messages].each do |msg|  %>
+        <li><%= msg %></li>
+      <% end %>
+    <ul>
+  </div>
 <% end %>
 <div class="container">
   <main>
@@ -25,7 +31,7 @@
           </li> %>
           <li class="list-group-item d-flex justify-content-between">
             <span>合計金額</span>
-            <strong><%= number_to_currency(current_cart.total_price, locale: 'jp') %></strong>
+            <strong><%= number_to_currency(current_cart.total_price, locale: 'ja') %></strong>
           </li>
         </ul>
         <form class="card p-2">

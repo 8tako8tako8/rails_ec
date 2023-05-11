@@ -2,7 +2,7 @@
 
 class CartsController < ApplicationController
   def index
-    @order = Order.new(flash[:order])
+    @order = Order.new(session[:order])
   end
 
   def add_to_cart

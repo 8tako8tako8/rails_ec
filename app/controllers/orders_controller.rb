@@ -4,15 +4,25 @@ class OrdersController < ApplicationController
   before_action :basic_auth, only: %i[index show], if: -> { Rails.env.production? }
 
   def create
-    request_order = order_params
-    if request_order[:order_details].blank?
-      redirect_to request.referer, flash: { order: request_order, alert: 'カートが空です' }
-      return
+    request_order = order_params.except(:order_details)
+    if order_params[:order_details].blank?
+      session[:order] = order_params
+      redirect_to request.referer, flash: { error_messages: ['カートが空です'] } and return
     end
-    ApplicationRecord.transaction { register_order(request_order) }
-    OrderMailer.order_confirm(request_order).deliver_now if request_order[:email].present?
-    flash[:notice] = '購入ありがとうございます'
-    redirect_to root_path
+    begin
+      ApplicationRecord.transaction { register_order(order_params) }
+      OrderMailer.order_confirm(order_params).deliver_now if order_params[:email].present?
+      flash[:notice] = '購入ありがとうございます'
+      redirect_to root_path
+    rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
+      flash[:error_messages] = e.record.errors.full_messages
+      session[:order] = request_order
+      redirect_to request.referer, flash: { error_messages: e.record.errors.full_messages } and return
+    rescue => e
+      flash[:error_messages] = ['予期しないエラー']
+      session[:order] = request_order
+      redirect_to request.referer, flash: { error_messages: ['予期しないエラー'] } and return
+    end
   end
 
   def index
@@ -49,7 +59,7 @@ class OrdersController < ApplicationController
   end
 
   def create_order(order)
-    Order.create!(
+    Order.create(
       first_name: order[:first_name], last_name: order[:last_name],
       email: order[:email], prefecture: order[:prefecture],
       address: order[:address], address2: order[:address2],
