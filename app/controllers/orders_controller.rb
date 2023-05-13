@@ -80,7 +80,7 @@ class OrdersController < ApplicationController
     if order_params[:order_details].blank?
       @order = Order.new(order_params)
       flash.now[:error_messages] = ['カートが空です']
-      render 'carts/index'
+      render 'carts/index', status: :unprocessable_entity
       return true
     end
     false
@@ -89,6 +89,6 @@ class OrdersController < ApplicationController
   def set_err_params_and_redirect(messages, request_order)
     @order = Order.new(request_order)
     flash.now[:error_messages] = messages
-    render 'carts/index'
+    render 'carts/index', status: :unprocessable_entity
   end
 end
