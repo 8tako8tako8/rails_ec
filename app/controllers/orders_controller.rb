@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
   def create
     return if cart_products_blank?(order_params, current_cart.cart_products)
 
-    order_details = set_order_details
+    order_details = OrderDetail.set_order_details(current_cart.cart_products)
     begin
       order(order_params, order_details)
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
@@ -38,19 +38,6 @@ class OrdersController < ApplicationController
       :card_name, :card_number, :card_expiration_date, :card_cvv,
       :quantity, :total_price
     )
-  end
-
-  def set_order_details
-    order_details = []
-    current_cart.cart_products.each do |cart_product|
-      order_details << OrderDetail.new(
-        product_sku: cart_product.product.sku,
-        product_name: cart_product.product.name,
-        unit_price: cart_product.product.price,
-        quantity: cart_product.quantity
-      )
-    end
-    order_details
   end
 
   def order(request_order, request_order_details)
