@@ -63,7 +63,8 @@ class OrdersController < ApplicationController
   def register_order(request_order, request_order_details)
     order = create_order(request_order)
     request_order_details.each do |order_detail|
-      create_order_detail(order, order_detail[:product_sku], order_detail[:product_name], order_detail[:unit_price], order_detail[:quantity])
+      create_order_detail(order, order_detail[:product_sku], order_detail[:product_name], order_detail[:unit_price],
+                          order_detail[:quantity])
     end
     current_cart.destroy!
   end
