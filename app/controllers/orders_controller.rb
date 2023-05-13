@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
   def create
     return if cart_products_blank?(order_params, current_cart.cart_products)
 
-    order_details = OrderDetail.set_order_details(current_cart.cart_products)
+    order_details = OrderDetail.create_order_details(current_cart.cart_products)
     begin
       order(order_params, order_details)
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
