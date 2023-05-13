@@ -20,7 +20,7 @@
             </h4>
             <ul class="list-group mb-3">
               <% current_cart.cart_products.each do |cart_product| %>
-                <%= render partial: 'cart_product', locals: { cart_product: cart_product } %>
+                <%= render partial: 'carts/cart_product', locals: { cart_product: cart_product } %>
               <% end %>
               <%# <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
             <div class="text-success">
