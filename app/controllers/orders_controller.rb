@@ -43,12 +43,12 @@ class OrdersController < ApplicationController
   def set_order_details
     order_details = []
     current_cart.cart_products.each do |cart_product|
-      order_details << {
+      order_details << OrderDetail.new(
         product_sku: cart_product.product.sku,
         product_name: cart_product.product.name,
         unit_price: cart_product.product.price,
         quantity: cart_product.quantity
-      }
+      )
     end
     order_details
   end
@@ -61,32 +61,10 @@ class OrdersController < ApplicationController
   end
 
   def register_order(request_order, request_order_details)
-    order = create_order(request_order)
-    request_order_details.each do |order_detail|
-      create_order_detail(order, order_detail[:product_sku], order_detail[:product_name], order_detail[:unit_price],
-                          order_detail[:quantity])
-    end
+    order = Order.new(request_order)
+    order.order_details = request_order_details
+    order.save!
     current_cart.destroy!
-  end
-
-  def create_order(order)
-    Order.create(
-      first_name: order[:first_name], last_name: order[:last_name],
-      email: order[:email], prefecture: order[:prefecture],
-      address: order[:address], address2: order[:address2],
-      card_name: order[:card_name], card_number: order[:card_number],
-      card_expiration_date: order[:card_expiration_date], card_cvv: order[:card_cvv],
-      total_price: order[:total_price]
-    )
-  end
-
-  def create_order_detail(order, product_sku, product_name, unit_price, quantity)
-    order.order_details.create!(
-      product_sku: product_sku,
-      product_name: product_name,
-      unit_price: unit_price,
-      quantity: quantity
-    )
   end
 
   def cart_products_blank?(request_order, cart_products)
