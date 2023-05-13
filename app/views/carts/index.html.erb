@@ -45,12 +45,6 @@
             <h4 class="mb-3">請求先</h4>
             <%= form_with model: @order do |form| %>
               <%= form.hidden_field :total_price, value: current_cart.total_price %>
-              <% current_cart.cart_products.each_with_index do |cart_product, index| %>
-                <%= form.hidden_field "order_details[][product_name]", value: cart_product.product.name %>
-                <%= form.hidden_field "order_details[][product_sku]", value: cart_product.product.sku %>
-                <%= form.hidden_field "order_details[][unit_price]", value: cart_product.product.price %>
-                <%= form.hidden_field "order_details[][quantity]", value: cart_product.quantity %>
-              <% end %>
               <div class="row g-3">
                 <div class="col-sm-6">
                   <%= form.label :last_name, '姓', class: "form-label" %>
