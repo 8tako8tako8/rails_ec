@@ -4,15 +4,16 @@ class OrdersController < ApplicationController
   before_action :basic_auth, only: %i[index show], if: -> { Rails.env.production? }
 
   def create
-    return if cart_products_blank?(order_params, current_cart.cart_products)
+    order = Order.new(order_params)
+    return if cart_products_blank?(order, current_cart.cart_products)
 
     order_details = OrderDetail.create_order_details(current_cart.cart_products)
     begin
-      order(order_params, order_details)
+      order(order, order_details)
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      set_err_params_and_redirect(e.record.errors.full_messages, order_params)
+      set_err_params_and_redirect(e.record.errors.full_messages, order)
     rescue StandardError
-      set_err_params_and_redirect(['予期しないエラー'], order_params)
+      set_err_params_and_redirect(['予期しないエラー'], order)
     end
   end
 
@@ -40,23 +41,23 @@ class OrdersController < ApplicationController
     )
   end
 
-  def order(request_order, request_order_details)
-    ApplicationRecord.transaction { register_order(request_order, request_order_details) }
-    OrderMailer.order_confirm(request_order, request_order_details).deliver_now
+  def order(order, order_details)
+    ApplicationRecord.transaction { register_order(order, order_details) }
+    OrderMailer.order_confirm(order, order_details).deliver_now
     flash[:notice] = '購入ありがとうございます'
     redirect_to root_path
   end
 
-  def register_order(request_order, request_order_details)
-    order = Order.new(request_order)
-    order.order_details = request_order_details
+  def register_order(order, order_details)
+    order = order
+    order.order_details = order_details
     order.save!
     current_cart.destroy!
   end
 
-  def cart_products_blank?(request_order, cart_products)
+  def cart_products_blank?(order, cart_products)
     if cart_products.blank?
-      @order = Order.new(request_order)
+      @order = order
       flash.now[:error_messages] = ['カートが空です']
       render 'carts/index', status: :unprocessable_entity
       return true
@@ -64,8 +65,8 @@ class OrdersController < ApplicationController
     false
   end
 
-  def set_err_params_and_redirect(messages, request_order)
-    @order = Order.new(request_order)
+  def set_err_params_and_redirect(messages, order)
+    @order = order
     flash.now[:error_messages] = messages
     render 'carts/index', status: :unprocessable_entity
   end
