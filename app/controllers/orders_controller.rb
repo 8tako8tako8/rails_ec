@@ -36,8 +36,7 @@ class OrdersController < ApplicationController
   def order_params
     params.require(:order).permit(
       :first_name, :last_name, :email, :prefecture, :address, :address2,
-      :card_name, :card_number, :card_expiration_date, :card_cvv,
-      :quantity, :total_price
+      :card_name, :card_number, :card_expiration_date, :card_cvv, :quantity
     )
   end
 
@@ -50,6 +49,7 @@ class OrdersController < ApplicationController
 
   def register_order(order, order_details)
     order.order_details = order_details
+    order.total_price = current_cart.total_price
     order.promotion_code = current_cart.promotion_code
     order.save!
     current_cart.destroy!
