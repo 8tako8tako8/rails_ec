@@ -1,0 +1,35 @@
+<h1>注文詳細</h1>
+<h2>注文者情報</h2>
+<p>ID: <%= @order.id %></p>
+<p>姓: <%= @order.last_name %></p>
+<p>名: <%= @order.first_name %></p>
+<p>メールアドレス: <%= @order.email %></p>
+<p>都道府県: <%= @order.prefecture %></p>
+<p>住所1: <%= @order.address %></p>
+<p>住所2: <%= @order.address2 %></p>
+<p>カード名義人: <%= @order.card_name %></p>
+<p>カード番号: <%= @order.card_number %></p>
+<p>カード有効期限: <%= @order.card_expiration_date %></p>
+<p>カードセキュリティコード: <%= @order.card_cvv %></p>
+<h2>注文明細</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th>商品名</th>
+      <th>SKU</th>
+      <th>数量</th>
+      <th>単価</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @order.order_details.each do |order_detail| %>
+      <tr>
+        <td><%= order_detail.product_name %></td>
+        <td><%= order_detail.product_sku %></td>
+        <td><%= order_detail.quantity %></td>
+        <td><%= number_to_currency(order_detail.unit_price, locale: 'ja') %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<p>合計金額: <%= number_to_currency(@order.total_price, locale: 'ja') %></p>

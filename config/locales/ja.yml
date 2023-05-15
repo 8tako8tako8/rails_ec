@@ -1,0 +1,55 @@
+ja:
+  number:
+    currency:
+      format:
+        unit: "円"
+        format: "%n%u"
+        negative_format: "-%n%u"
+        precision: 0
+  activerecord:
+    attributes:
+      order:
+        first_name: "名"
+        last_name: "姓"
+        email: "メールアドレス"
+        prefecture: "都道府県"
+        address: "市区町村"
+        address2: "丁目・番地"
+        card_name: "カード名"
+        card_number: "カード番号"
+        card_expiration_date: "有効期限"
+        card_cvv: "CVV"
+        total_price: "合計金額"
+      order_detail:
+        product_sku: "商品SKU"
+        product_name: "商品名"
+        unit_price: "単価"
+        quantity: "数量"
+    errors:
+      models:
+        order:
+          attributes:
+            first_name:
+              blank: "名を入力してください"
+            last_name:
+              blank: "姓を入力してください"
+            email:
+              blank: "メールアドレスを入力してください"
+            prefecture:
+              blank: "都道府県を入力してください"
+            address:
+              blank: "住所を入力してください"
+            address2:
+              blank: "建物名・部屋番号を入力してください"
+            card_name:
+              blank: "カード名を入力してください"
+            card_number:
+              blank: "カード番号を入力してください"
+              too_short: "カード番号を14〜16字で入力してください"
+            card_expiration_date:
+              blank: "有効期限を入力してください"
+            card_cvv:
+              blank: "CVVを入力してください"
+              too_short: "CVVを3〜4字で入力してください"
+            total_price:
+              blank: "合計金額を入力してください"

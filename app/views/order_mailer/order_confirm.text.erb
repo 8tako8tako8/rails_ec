@@ -1,0 +1,12 @@
+ご注文ありがとうございます。
+以下の商品を注文いただきました。
+
+------------------------------------
+<% @order_details.each do |order_detail| %>
+商品名:<%= order_detail[:product_name] %>
+SKU:<%= order_detail[:product_sku] %>
+単価:<%= number_to_currency(order_detail[:unit_price], locale: 'ja') %>
+数量:<%= order_detail[:quantity] %>
+------------------------------------
+<% end %>
+合計:<%= number_to_currency(@order[:total_price], locale: 'ja') %>
