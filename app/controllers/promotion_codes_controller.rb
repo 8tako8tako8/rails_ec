@@ -20,10 +20,7 @@ class PromotionCodesController < ApplicationController
   private
 
   def apply_promotion_code(promotion_code)
-    ApplicationRecord.transaction do
-      current_cart.update!(promotion_code: promotion_code)
-      promotion_code.update!(is_used: true)
-    end
+    ApplicationRecord.transaction { current_cart.apply_promotion_code!(promotion_code) }
     flash.now[:notice] = 'プロモーションコードが適用されました'
     render 'carts/index', status: :unprocessable_entity
   end

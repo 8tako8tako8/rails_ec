@@ -13,4 +13,9 @@ class Cart < ApplicationRecord
     discounted_price = each_prices.sum - (promotion_code&.discount_amount || 0)
     [discounted_price, 0].max
   end
+
+  def apply_promotion_code!(promotion_code)
+    update!(promotion_code: promotion_code)
+    promotion_code.update!(is_used: true)
+  end
 end
