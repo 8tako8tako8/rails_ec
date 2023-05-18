@@ -5,15 +5,15 @@ class OrdersController < ApplicationController
 
   def create
     order = Order.new(order_params)
-    return set_err_params_and_render(['カートが空です'], order) if current_cart.cart_products.blank?
+    return err_params_and_render(['カートが空です'], order) if current_cart.cart_products.blank?
 
     order_details = OrderDetail.create_order_details(current_cart.cart_products)
     begin
       order(order, order_details)
     rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved => e
-      set_err_params_and_render(e.record.errors.full_messages, order)
+      err_params_and_render(e.record.errors.full_messages, order)
     rescue StandardError
-      set_err_params_and_render(['予期しないエラー'], order)
+      err_params_and_render(['予期しないエラー'], order)
     end
   end
 
@@ -36,8 +36,7 @@ class OrdersController < ApplicationController
   def order_params
     params.require(:order).permit(
       :first_name, :last_name, :email, :prefecture, :address, :address2,
-      :card_name, :card_number, :card_expiration_date, :card_cvv,
-      :quantity, :total_price
+      :card_name, :card_number, :card_expiration_date, :card_cvv, :quantity
     )
   end
 
@@ -50,11 +49,13 @@ class OrdersController < ApplicationController
 
   def register_order(order, order_details)
     order.order_details = order_details
+    order.total_price = current_cart.total_price
+    order.promotion_code = current_cart.promotion_code
     order.save!
     current_cart.destroy!
   end
 
-  def set_err_params_and_render(messages, order)
+  def err_params_and_render(messages, order)
     @order = order
     flash.now[:error_messages] = messages
     render 'carts/index', status: :unprocessable_entity

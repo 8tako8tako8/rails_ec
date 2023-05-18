@@ -22,29 +22,27 @@
               <% current_cart.cart_products.each do |cart_product| %>
                 <%= render partial: 'carts/cart_product', locals: { cart_product: cart_product } %>
               <% end %>
-              <%# <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
-            <div class="text-success">
-              <h6 class="my-0">Promo code</h6>
-              <small>EXAMPLECODE</small>
-            </div>
-            <span class="text-success">−$5</span>
-          </li> %>
+              <li class="list-group-item d-flex justify-content-between bg-body-tertiary">
+                <div class="text-success">
+                  <h6 class="my-0"><%= current_cart.promotion_code&.code %></h6>
+                </div>
+                <span class="text-success"><%= number_to_currency(current_cart.promotion_code&.discount_amount, locale: 'ja') %></span>
+              </li>
               <li class="list-group-item d-flex justify-content-between">
                 <span>合計金額</span>
                 <strong><%= number_to_currency(current_cart.total_price, locale: 'ja') %></strong>
               </li>
             </ul>
-            <form class="card p-2">
+            <%= form_with url: 'promotion-codes/use', method: :post, class: "card p-2" do |form| %>
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="プロモーションコード">
+                <%= form.text_field :code, class: "form-control", placeholder: "プロモーションコード" %>
                 <button type="submit" class="btn btn-secondary">適用</button>
               </div>
-            </form>
+            <% end %>
           </div>
           <div class="col-md-7 col-lg-8">
             <h4 class="mb-3">請求先</h4>
             <%= form_with model: @order do |form| %>
-              <%= form.hidden_field :total_price, value: current_cart.total_price %>
               <div class="row g-3">
                 <div class="col-sm-6">
                   <%= form.label :last_name, '姓', class: "form-label" %>

@@ -2,6 +2,7 @@
 
 class Order < ApplicationRecord
   has_many :order_details, dependent: :destroy
+  belongs_to :promotion_code, optional: true
 
   validates :first_name, presence: true
   validates :last_name, presence: true
